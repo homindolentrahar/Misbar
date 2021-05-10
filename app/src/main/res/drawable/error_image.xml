@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/dark" />
+    <item
+        android:bottom="@dimen/big_spacing"
+        android:drawable="@drawable/ic_error_image"
+        android:left="@dimen/big_spacing"
+        android:right="@dimen/big_spacing"
+        android:top="@dimen/big_spacing" />
+</layer-list>
