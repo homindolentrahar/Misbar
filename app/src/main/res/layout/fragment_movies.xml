@@ -1,76 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/movies_fragment"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movies_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".ui.movies.MoviesFragment">
 
-    <com.homindolentrahar.misbar.ui.core.NestedScrollableHost
-        android:id="@+id/movies_carousel_wrapper"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_spacing"
-        android:layout_marginEnd="@dimen/big_spacing"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.homindolentrahar.misbar.ui.core.NestedScrollableHost
+                android:id="@+id/movies_carousel_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/double_spacing"
+                android:layout_marginHorizontal="@dimen/big_spacing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/movies_carousel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </com.homindolentrahar.misbar.ui.core.NestedScrollableHost>
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/movies_carousel_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                app:dotsColor="@color/dark"
+                app:dotsCornerRadius="@dimen/radius"
+                app:dotsSize="10dp"
+                app:dotsSpacing="@dimen/small_spacing"
+                app:layout_constraintEnd_toEndOf="@id/movies_carousel_wrapper"
+                app:layout_constraintStart_toStartOf="@id/movies_carousel_wrapper"
+                app:layout_constraintTop_toBottomOf="@id/movies_carousel_wrapper"
+                app:progressMode="false"
+                app:selectedDotColor="@color/colorPrimary" />
+
+            <include
+                android:id="@+id/genre_banner"
+                layout="@layout/genre_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/big_spacing"
+                android:layout_marginTop="@dimen/double_spacing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movies_carousel_indicator" />
+
+            <TextView
+                android:id="@+id/text_popular"
+                style="@style/Subheading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/double_spacing"
+                android:text="@string/popular"
+                app:layout_constraintStart_toStartOf="@id/movies_carousel_wrapper"
+                app:layout_constraintTop_toBottomOf="@id/genre_banner" />
+
+            <com.homindolentrahar.misbar.ui.core.NestedScrollableHost
+                android:id="@+id/rv_popular_movies_wrapper"
+                android:layout_width="0dp"
+                android:layout_height="480dp"
+                android:layout_marginTop="@dimen/spacing"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/movies_carousel_wrapper"
+                app:layout_constraintStart_toStartOf="@id/movies_carousel_wrapper"
+                app:layout_constraintTop_toBottomOf="@id/text_popular">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_popular_movies"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="20"
+                    tools:listitem="@layout/movies_list_item" />
+
+            </com.homindolentrahar.misbar.ui.core.NestedScrollableHost>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading_animation"
+        layout="@layout/loading_animation"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/movies_carousel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </com.homindolentrahar.misbar.ui.core.NestedScrollableHost>
-
-    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-        android:id="@+id/movies_carousel_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing"
-        app:dotsColor="@color/dark"
-        app:dotsCornerRadius="@dimen/radius"
-        app:dotsSize="10dp"
-        app:dotsSpacing="@dimen/small_spacing"
-        app:layout_constraintEnd_toEndOf="@id/movies_carousel_wrapper"
-        app:layout_constraintStart_toStartOf="@id/movies_carousel_wrapper"
-        app:layout_constraintTop_toBottomOf="@id/movies_carousel_wrapper"
-        app:progressMode="false"
-        app:selectedDotColor="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/text_popular"
-        style="@style/Subheading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/double_spacing"
-        android:text="@string/popular"
-        app:layout_constraintStart_toStartOf="@id/movies_carousel_wrapper"
-        app:layout_constraintTop_toBottomOf="@id/movies_carousel_indicator" />
-
-    <com.homindolentrahar.misbar.ui.core.NestedScrollableHost
-        android:id="@+id/rv_popular_movies_wrapper"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/movies_carousel_wrapper"
-        app:layout_constraintStart_toStartOf="@id/movies_carousel_wrapper"
-        app:layout_constraintTop_toBottomOf="@id/text_popular">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_popular_movies"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="20"
-            tools:listitem="@layout/list_item" />
-
-    </com.homindolentrahar.misbar.ui.core.NestedScrollableHost>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

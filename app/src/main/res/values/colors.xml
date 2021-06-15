@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
 
     <!--    I actually use this palette     -->
-    <color name="colorPrimary">#E554AB</color>
-    <color name="grey">#AFAFAF</color>
+    <color name="colorPrimary">#FF8CD1</color>
+    <color name="grey">#AAAAAA</color>
     <color name="black">#0F1116</color>
     <color name="white">#FAFAFA</color>
-    <color name="dark">#232834</color>
+    <color name="dark">#171A22</color>
     <color name="light">#DADADA</color>
+    <color name="overlay">#BF0F1116</color>
 </resources>

@@ -32,6 +32,16 @@
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_logo_title" />
 
+            <ImageButton
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/big_spacing"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/ic_search"
+                app:tint="@color/light" />
+
         </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout

@@ -1,32 +1,82 @@
 package com.homindolentrahar.misbar.ui.shows
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.MediumTest
 import com.homindolentrahar.misbar.R
-import com.homindolentrahar.misbar.data.core.LocalItems
-import com.homindolentrahar.misbar.ui.detail.DetailItemFragment
-import com.homindolentrahar.misbar.ui.detail.DetailItemType
 import org.junit.Test
-import org.junit.runner.RunWith
 import com.google.common.truth.Truth.assertThat
+import com.homindolentrahar.misbar.data.repositories.FakeFavoritesRepositoryAndroid
+import com.homindolentrahar.misbar.data.repositories.FakeMoviesRepositoryAndroid
+import com.homindolentrahar.misbar.data.repositories.FakeShowsRepositoryAndroid
+import com.homindolentrahar.misbar.launchFragmentInHiltContainer
+import com.homindolentrahar.misbar.others.constants.Constants
+import com.homindolentrahar.misbar.others.constants.DummyData
+import com.homindolentrahar.misbar.others.constants.ItemType
+import com.homindolentrahar.misbar.ui.core.AppFragmentFactory
+import com.homindolentrahar.misbar.ui.genres.GenresFragment
+import com.homindolentrahar.misbar.ui.genres.GenresFragmentType
+import com.homindolentrahar.misbar.ui.movies.MoviesFragment
+import com.homindolentrahar.misbar.ui.movies.MoviesViewModel
+import com.homindolentrahar.misbar.utils.EspressoIdlingResource
+import com.homindolentrahar.misbar.utils.getOrAwaitValueTestAndroid
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.allOf
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import javax.inject.Inject
 
-@RunWith(AndroidJUnit4::class)
+@MediumTest
+@ExperimentalCoroutinesApi
+@HiltAndroidTest
 class ShowsFragmentTest {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var fragmentFactory: AppFragmentFactory
+
+    private val dummyDetailShowsModel = DummyData.generateDetailShowsModel()
+    private val dummyRandomGenre = Constants.getLocalGenres(ItemType.Shows)[0]
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
+    }
+
+    @After
+    fun teardown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
+    }
+
     @Test
     fun testCarouselSwipe() {
-//        Scroll to last position of carousel, then scroll back to first position
-        launchFragmentInContainer<ShowsFragment>(themeResId = R.style.Theme_Misbar)
+        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+        val testViewModel =
+            ShowsViewModel(FakeShowsRepositoryAndroid(), FakeFavoritesRepositoryAndroid())
+
+        launchFragmentInHiltContainer<ShowsFragment>(fragmentFactory = fragmentFactory) {
+            Navigation.setViewNavController(requireView(), navController)
+            viewModel = testViewModel
+        }
 
         onView(withId(R.id.shows_fragment)).check(matches(isDisplayed()))
 
@@ -40,14 +90,20 @@ class ShowsFragmentTest {
 
     @Test
     fun testListScroll() {
-//        Scroll to last position of list, then scroll back to first position
-        launchFragmentInContainer<ShowsFragment>(themeResId = R.style.Theme_Misbar)
+        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+        val testViewModel =
+            ShowsViewModel(FakeShowsRepositoryAndroid(), FakeFavoritesRepositoryAndroid())
+
+        launchFragmentInHiltContainer<ShowsFragment>(fragmentFactory = fragmentFactory) {
+            Navigation.setViewNavController(requireView(), navController)
+            viewModel = testViewModel
+        }
 
         onView(withId(R.id.shows_fragment)).check(matches(isDisplayed()))
 
         onView(withId(R.id.rv_popular_shows)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                LocalItems.localShows.lastIndex
+                4
             )
         )
 
@@ -60,17 +116,13 @@ class ShowsFragmentTest {
 
     @Test
     fun testCarouselSwipeToPosition_click() {
-//        Scroll 3 times on carousel, then click it
-//        It will navigate to DetailItemFragment with corresponding data
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-        val fragmentScenario =
-            launchFragmentInContainer<ShowsFragment>(themeResId = R.style.Theme_Misbar)
+        val testViewModel =
+            ShowsViewModel(FakeShowsRepositoryAndroid(), FakeFavoritesRepositoryAndroid())
 
-        fragmentScenario.onFragment { fragment ->
-            navController.setGraph(R.navigation.app_navigation)
-            navController.setCurrentDestination(R.id.mainFragment)
-
-            Navigation.setViewNavController(fragment.requireView(), navController)
+        launchFragmentInHiltContainer<ShowsFragment>(fragmentFactory = fragmentFactory) {
+            Navigation.setViewNavController(requireView(), navController)
+            viewModel = testViewModel
         }
 
         onView(withId(R.id.shows_carousel)).check(matches(isDisplayed()))
@@ -78,68 +130,86 @@ class ShowsFragmentTest {
             swipeLeft(), swipeLeft(), swipeLeft(), click()
         )
 
-        assertThat(navController.currentDestination?.id).isEqualTo(R.id.detailItemFragment)
+        assertThat(testViewModel.detailNavigationData.getOrAwaitValueTestAndroid()).isNotEqualTo(-1)
 //       Navigating to DetailItemFragment
-        val detailFragmentScenario =
-            launchFragmentInContainer<DetailItemFragment>(
-                fragmentArgs = bundleOf(
-                    "type" to DetailItemType.Shows.type,
-                    "itemId" to 4
-                ), themeResId = R.style.Theme_Misbar
-            )
-//
-        detailFragmentScenario.onFragment { fragment ->
-            navController.setGraph(R.navigation.app_navigation)
-            navController.setCurrentDestination(R.id.detailItemFragment)
-
-            Navigation.setViewNavController(fragment.requireView(), navController)
+        val bundle = bundleOf(
+            "id" to dummyDetailShowsModel.id,
+        )
+        launchFragmentInHiltContainer<DetailShowsFragment>(
+            fragmentFactory = fragmentFactory,
+            fragmentArgs = bundle
+        ) {
+            Navigation.setViewNavController(requireView(), navController)
+            showsViewModel = testViewModel
         }
 
         onView(withId(R.id.tv_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_title)).check(matches(withText(LocalItems.localShows[3].title)))
     }
 
     @Test
     fun testListScrollToPosition_click() {
-//        Scroll to the 5th position of the list, then click it
-//        It will navigate to DetailItemFragment with corresponding data
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-        val fragmentScenario =
-            launchFragmentInContainer<ShowsFragment>(themeResId = R.style.Theme_Misbar)
+        val testViewModel =
+            ShowsViewModel(FakeShowsRepositoryAndroid(), FakeFavoritesRepositoryAndroid())
 
-        fragmentScenario.onFragment { fragment ->
-            navController.setGraph(R.navigation.app_navigation)
-            navController.setCurrentDestination(R.id.mainFragment)
-
-            Navigation.setViewNavController(fragment.requireView(), navController)
+        launchFragmentInHiltContainer<ShowsFragment>(fragmentFactory = fragmentFactory) {
+            Navigation.setViewNavController(requireView(), navController)
+            viewModel = testViewModel
         }
 
         onView(withId(R.id.rv_popular_shows)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_popular_shows)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                4,
+                0,
                 click()
             )
         )
 
-        assertThat(navController.currentDestination?.id).isEqualTo(R.id.detailItemFragment)
+        assertThat(testViewModel.detailNavigationData.getOrAwaitValueTestAndroid()).isNotEqualTo(-1)
 //       Navigating to DetailItemFragment
-        val detailFragmentScenario =
-            launchFragmentInContainer<DetailItemFragment>(
-                fragmentArgs = bundleOf(
-                    "type" to DetailItemType.Shows.type,
-                    "itemId" to 5
-                ), themeResId = R.style.Theme_Misbar
-            )
-//
-        detailFragmentScenario.onFragment { fragment ->
-            navController.setGraph(R.navigation.app_navigation)
-            navController.setCurrentDestination(R.id.detailItemFragment)
-
-            Navigation.setViewNavController(fragment.requireView(), navController)
+        val bundle = bundleOf(
+            "id" to dummyDetailShowsModel.id,
+        )
+        launchFragmentInHiltContainer<DetailShowsFragment>(
+            fragmentFactory = fragmentFactory,
+            fragmentArgs = bundle
+        ) {
+            Navigation.setViewNavController(requireView(), navController)
+            showsViewModel = testViewModel
         }
 
         onView(withId(R.id.tv_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_title)).check(matches(withText(LocalItems.localShows[4].title)))
     }
+
+    @Test
+    fun testGenreBanner_click() {
+        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+        val testViewModel =
+            MoviesViewModel(FakeMoviesRepositoryAndroid(), FakeFavoritesRepositoryAndroid())
+
+        launchFragmentInHiltContainer<MoviesFragment>(fragmentFactory = fragmentFactory) {
+            Navigation.setViewNavController(requireView(), navController)
+            viewModel = testViewModel
+        }
+
+        onView(withId(R.id.genre_banner)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_check)).perform(click())
+
+        assertThat(testViewModel.genreNavigationData.getOrAwaitValueTestAndroid()).isNotNull()
+
+        val bundle = bundleOf(
+            "type" to GenresFragmentType.Shows.name,
+            "genre" to dummyRandomGenre,
+        )
+        launchFragmentInHiltContainer<GenresFragment>(
+            fragmentFactory = fragmentFactory,
+            fragmentArgs = bundle
+        ) {
+            Navigation.setViewNavController(requireView(), navController)
+            moviesViewModel = testViewModel
+        }
+
+        onView(withId(R.id.genres_fragment)).check(matches(isDisplayed()))
+    }
+
 }

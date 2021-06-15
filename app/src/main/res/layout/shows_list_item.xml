@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.homindolentrahar.misbar.domain.models.ShowsModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/double_spacing"
+        android:background="@android:color/transparent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_poster"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/poster"
+            android:scaleType="centerCrop"
+            app:imagePoster="@{item.posterPath}"
+            app:layout_constraintBottom_toBottomOf="@id/item_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_content"
+            app:shapeAppearanceOverlay="@style/RoundedImageView" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_poster"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/ItemTitle.ListItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.name}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Ralph Breaks the Internet" />
+
+            <TextView
+                android:id="@+id/tv_release"
+                style="@style/ItemSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_small_spacing"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                app:releaseDate="@{item.firstAirDate}"
+                tools:text="May 30, 2002" />
+
+            <TextView
+                android:id="@+id/tv_genres"
+                style="@style/ItemSubtitle.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_spacing"
+                app:itemGenres="@{item.genres}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_release"
+                tools:text="Action, Comedy, Adventure" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/item_rating"
+                style="@style/ChipRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                android:enabled="false"
+                android:text="@{String.valueOf(item.voteAverage)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_genres"
+                tools:text="4.5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

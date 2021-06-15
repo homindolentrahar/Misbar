@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/expandable_episodes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/dark"
+    app:cardCornerRadius="@dimen/radius"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/title_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/big_spacing"
+            android:layout_marginVertical="@dimen/spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_episodes"
+                style="@style/ExpandableTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing"
+                android:text="@string/episodes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/dark"
+                app:layout_constraintBottom_toBottomOf="@id/text_episodes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_episodes"
+                app:srcCompat="@drawable/ic_down"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/big_spacing"
+            android:layout_marginBottom="@dimen/spacing"
+            android:gravity="start|center_vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_container">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/last_episode_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_last_episode"
+                    style="@style/ExpandableSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_episode"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_last_poster"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_last_airing"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_last_episode"
+                    app:shapeAppearanceOverlay="@style/RoundedImageView"
+                    tools:src="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_last_name"
+                    style="@style/EpisodeTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_spacing"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/img_last_poster"
+                    app:layout_constraintTop_toTopOf="@id/img_last_poster"
+                    tools:text="The Last Jedi" />
+
+                <TextView
+                    android:id="@+id/tv_last_episode"
+                    style="@style/EpisodeSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/tv_last_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_last_name"
+                    tools:text="Episode 8" />
+
+                <TextView
+                    android:id="@+id/text_last_separator"
+                    style="@style/DetailSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_spacing"
+                    android:text="@string/separator"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_last_episode"
+                    app:layout_constraintStart_toEndOf="@id/tv_last_episode"
+                    app:layout_constraintTop_toTopOf="@id/tv_last_episode" />
+
+                <TextView
+                    android:id="@+id/tv_last_season"
+                    style="@style/EpisodeSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_spacing"
+                    app:layout_constraintBottom_toBottomOf="@id/text_last_separator"
+                    app:layout_constraintStart_toEndOf="@id/text_last_separator"
+                    app:layout_constraintTop_toTopOf="@id/text_last_separator"
+                    tools:text="Season 1" />
+
+                <TextView
+                    android:id="@+id/tv_last_airing"
+                    style="@style/Episode3rdSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_spacing"
+                    app:layout_constraintStart_toStartOf="@id/tv_last_episode"
+                    app:layout_constraintTop_toBottomOf="@id/tv_last_episode"
+                    tools:text="April 23, 2020" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/next_episode_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/last_episode_container">
+
+                <TextView
+                    android:id="@+id/text_next_episode"
+                    style="@style/ExpandableSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next_episode"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_next_poster"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_next_airing"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_next_episode"
+                    app:shapeAppearanceOverlay="@style/RoundedImageView"
+                    tools:src="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_next_name"
+                    style="@style/EpisodeTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_spacing"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/img_next_poster"
+                    app:layout_constraintTop_toTopOf="@id/img_next_poster"
+                    tools:text="Rise of Skywalker" />
+
+                <TextView
+                    android:id="@+id/tv_next_episode"
+                    style="@style/EpisodeSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/tv_next_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_next_name"
+                    tools:text="Episode 9" />
+
+                <TextView
+                    android:id="@+id/text_next_separator"
+                    style="@style/DetailSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_spacing"
+                    android:text="@string/separator"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_next_episode"
+                    app:layout_constraintStart_toEndOf="@id/tv_next_episode"
+                    app:layout_constraintTop_toTopOf="@id/tv_next_episode" />
+
+                <TextView
+                    android:id="@+id/tv_next_season"
+                    style="@style/EpisodeSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_spacing"
+                    app:layout_constraintBottom_toBottomOf="@id/text_next_separator"
+                    app:layout_constraintStart_toEndOf="@id/text_next_separator"
+                    app:layout_constraintTop_toTopOf="@id/text_next_separator"
+                    tools:text="Season 1" />
+
+                <TextView
+                    android:id="@+id/tv_next_airing"
+                    style="@style/Episode3rdSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_spacing"
+                    app:layout_constraintStart_toStartOf="@id/tv_next_episode"
+                    app:layout_constraintTop_toBottomOf="@id/tv_next_episode"
+                    tools:text="April 23, 2020" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

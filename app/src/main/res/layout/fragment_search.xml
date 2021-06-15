@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movies_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.search.SearchFragment">
+
+    <include
+        android:id="@id/back_button"
+        layout="@layout/custom_back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/Subheading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing"
+        android:text="Search Items"
+        android:textColor="@color/light"
+        app:layout_constraintBottom_toBottomOf="@id/back_button"
+        app:layout_constraintStart_toEndOf="@id/back_button"
+        app:layout_constraintTop_toTopOf="@id/back_button" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/big_spacing"
+        android:layout_marginTop="@dimen/spacing"
+        app:boxBackgroundColor="@color/dark"
+        app:boxCornerRadiusBottomEnd="@dimen/radius"
+        app:boxCornerRadiusBottomStart="@dimen/radius"
+        app:boxCornerRadiusTopEnd="@dimen/radius"
+        app:boxCornerRadiusTopStart="@dimen/radius"
+        app:boxStrokeColor="@color/white"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:startIconDrawable="@drawable/ic_search"
+        app:startIconTint="@color/grey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_for_favorite_items"
+            android:maxLines="1"
+            android:textColorHint="@color/grey" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/double_spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/search_layout"
+        app:layout_constraintStart_toStartOf="@id/search_layout"
+        app:layout_constraintTop_toBottomOf="@id/search_layout">
+
+        <com.homindolentrahar.misbar.ui.core.NestedScrollableHost
+            android:id="@+id/rv_search_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="20"
+                tools:listitem="@layout/favorites_list_item" />
+
+        </com.homindolentrahar.misbar.ui.core.NestedScrollableHost>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/not_found_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_not_found"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_not_found" />
+
+            <TextView
+                style="@style/Subheading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                android:text="@string/not_found"
+                app:layout_constraintEnd_toEndOf="@id/img_not_found"
+                app:layout_constraintStart_toStartOf="@id/img_not_found"
+                app:layout_constraintTop_toBottomOf="@id/img_not_found" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loading_animation"
+            layout="@layout/loading_animation"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

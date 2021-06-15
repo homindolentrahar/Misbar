@@ -3,53 +3,27 @@ package com.homindolentrahar.misbar.utils.helpers
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.homindolentrahar.misbar.BuildConfig
 import com.homindolentrahar.misbar.R
+import com.homindolentrahar.misbar.domain.models.ShowsCreatedByModel
+import com.homindolentrahar.misbar.domain.models.GenresModel
 import com.homindolentrahar.misbar.utils.mappers.FormatMapper
 
-@BindingAdapter("directorVisibility")
-fun bindDirectorVisibility(container: ConstraintLayout, director: String) {
-    container.visibility =
-        if (director.isNotEmpty()) View.VISIBLE
-        else View.GONE
-}
-
-@BindingAdapter("revenueVisibility")
-fun bindRevenueVisibility(container: ConstraintLayout, revenue: Int) {
-    container.visibility =
-        if (revenue == 0) View.INVISIBLE
-        else View.VISIBLE
-}
-
-@BindingAdapter("genresChip", "ratingChip")
-fun bindChips(chipGroup: ChipGroup, genres: List<String>, rating: Double) {
+@BindingAdapter("genresChip", "ratingChip", requireAll = false)
+fun bindChips(chipGroup: ChipGroup, genres: List<GenresModel>, rating: Double) {
     chipGroup.removeAllViews()
 
-    genres.forEach { genre ->
-        val chip = Chip(chipGroup.context).apply {
-            id = R.id.genre_item_chip
-            setChipCornerRadiusResource(R.dimen.radius)
-            setChipBackgroundColorResource(R.color.dark)
-            text = genre.trim()
-            textAlignment = View.TEXT_ALIGNMENT_CENTER
-            setTextAppearanceResource(R.style.ChipTitle)
-            setChipStartPaddingResource(R.dimen.small_spacing)
-            setChipEndPaddingResource(R.dimen.small_spacing)
-            isClickable = false
-            isEnabled = false
-        }
-        chipGroup.addView(chip)
-    }
     chipGroup.addView(Chip(chipGroup.context).apply {
         id = R.id.rating_chip
         setChipCornerRadiusResource(R.dimen.radius)
+        setChipMinHeightResource(R.dimen.chip_size)
         chipIcon = ContextCompat.getDrawable(chipGroup.context, R.drawable.ic_rating)
         setChipIconSizeResource(R.dimen.chip_icon_size)
         setIconStartPaddingResource(R.dimen.small_spacing)
@@ -64,12 +38,30 @@ fun bindChips(chipGroup: ChipGroup, genres: List<String>, rating: Double) {
         isClickable = false
         isEnabled = false
     })
+
+    genres.forEach { genre ->
+        chipGroup.addView(
+            Chip(chipGroup.context).apply {
+                id = R.id.genre_item_chip
+                setChipCornerRadiusResource(R.dimen.radius)
+                setChipBackgroundColorResource(R.color.dark)
+                text = genre.name
+                textAlignment = View.TEXT_ALIGNMENT_CENTER
+                setTextAppearanceResource(R.style.ChipTitle)
+                setChipStartPaddingResource(R.dimen.small_spacing)
+                setChipEndPaddingResource(R.dimen.small_spacing)
+                isClickable = false
+                isEnabled = false
+            }
+        )
+    }
+
 }
 
 @BindingAdapter("imagePoster")
-fun bindImagePoster(imageView: ImageView, imgSrc: Int) {
+fun bindImagePoster(imageView: ImageView, imgSrc: String) {
     Glide.with(imageView)
-        .load(imgSrc)
+        .load(BuildConfig.IMAGE_URL + imgSrc)
         .apply(
             RequestOptions
                 .placeholderOf(R.drawable.placeholder_image)
@@ -78,19 +70,40 @@ fun bindImagePoster(imageView: ImageView, imgSrc: Int) {
         .into(imageView)
 }
 
+@BindingAdapter("imageResource")
+fun bindImageRes(imageView: ImageView, @DrawableRes imgRes: Int) {
+    imageView.setImageResource(imgRes)
+}
+
 @BindingAdapter("itemGenres")
-fun bindItemGenres(textView: TextView, genres: List<String>) {
-    textView.text = genres.joinToString(", ")
+fun bindItemGenres(textView: TextView, genres: List<GenresModel>) {
+    textView.text = genres.joinToString(", ") { it.name }
 }
 
 @BindingAdapter("revenueInt")
 fun bindRevenue(textView: TextView, revenue: Int) {
-    val formattedRevenue = FormatMapper.formatRevenueString(revenue)
-    textView.text = formattedRevenue
+    textView.text = textView.resources.getString(
+        R.string.revenue_format,
+        FormatMapper.formatRevenueString(revenue)
+    )
 }
 
 @BindingAdapter("releaseDate")
 fun bindReleaseDate(textView: TextView, releaseStr: String) {
-    val formattedReleaseDate = FormatMapper.formatReleaseDate(releaseStr)
-    textView.text = formattedReleaseDate
+    textView.text = FormatMapper.formatReleaseDate(releaseStr)
+}
+
+@BindingAdapter("runtime")
+fun bindRuntime(textView: TextView, runtime: Int) {
+    textView.text = FormatMapper.formatRuntime(runtime)
+}
+
+@BindingAdapter("productionLocation")
+fun bindProductionLocation(textView: TextView, location: List<String>) {
+    textView.text = location.joinToString(", ")
+}
+
+@BindingAdapter("creator")
+fun bindCreator(textView: TextView, creators: List<ShowsCreatedByModel>) {
+    textView.text = creators.map { it.name }.joinToString(", ")
 }

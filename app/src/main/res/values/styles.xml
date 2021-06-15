@@ -34,6 +34,18 @@
         <item name="android:textColor">@color/grey</item>
     </style>
 
+    <style name="BannerTitle">
+        <item name="android:fontFamily">@font/grotesk_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="BannerSubtitle">
+        <item name="android:fontFamily">@font/grotesk_medium</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="ChipTitle">
         <item name="android:fontFamily">@font/grotesk_semibold</item>
         <item name="android:textColor">@color/white</item>
@@ -46,8 +58,20 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ChipGenre">
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="chipStrokeColor">@color/border_color_chip_selector</item>
+        <item name="android:minWidth">72dp</item>
+        <item name="android:fontFamily">@font/grotesk_semibold</item>
+        <item name="android:textColor">@color/text_color_chip_selector</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:padding">@dimen/small_spacing</item>
+        <item name="chipBackgroundColor">@color/dark</item>
+        <item name="chipCornerRadius">@dimen/radius</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="ChipRating">
-        <item name="android:textAppearance">@style/ChipTitle.Primary</item>
         <item name="android:fontFamily">@font/grotesk_bold</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
@@ -60,6 +84,7 @@
         <item name="chipStrokeWidth">1.5dp</item>
         <item name="iconEndPadding">@dimen/half_small_spacing</item>
         <item name="iconStartPadding">@dimen/small_spacing</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TabTitle" parent="TextAppearance.Design.Tab">
@@ -97,12 +122,6 @@
         <item name="android:fontFamily">@font/grotesk_bold</item>
     </style>
 
-    <style name="DetailBody">
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">@font/grotesk_medium</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="DetailInfo">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/grotesk_bold</item>
@@ -115,10 +134,41 @@
         <item name="android:textColor">@color/light</item>
     </style>
 
-    <style name="DetailInfo.AgeRating">
-        <item name="android:textSize">16sp</item>
+    <style name="ExpandableTitle">
         <item name="android:fontFamily">@font/grotesk_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ExpandableSubtitle">
+        <item name="android:fontFamily">@font/grotesk_semibold</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/light</item>
+    </style>
+
+    <style name="ExpandableBody">
+        <item name="android:fontFamily">@font/grotesk_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+
+    <style name="EpisodeTitle">
+        <item name="android:fontFamily">@font/grotesk_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="EpisodeSubtitle">
+        <item name="android:fontFamily">@font/grotesk_semibold</item>
+        <item name="android:textColor">@color/light</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Episode3rdSubtitle">
+        <item name="android:fontFamily">@font/grotesk_medium</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.homindolentrahar.misbar.domain.models.ShowsSeasonsModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/season_list_item"
+        android:layout_marginBottom="@dimen/spacing"
+        android:background="@color/dark">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_poster"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            app:imagePoster="@{item.posterPath}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
+            tools:src="@color/colorPrimary" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing"
+            app:layout_constraintBottom_toBottomOf="@id/img_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_poster"
+            app:layout_constraintTop_toTopOf="@id/img_poster">
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/ItemTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@{item.name}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Season 1" />
+
+            <TextView
+                android:id="@+id/tv_episodes"
+                style="@style/ItemSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_small_spacing"
+                android:text="@{String.valueOf(item.episodeCount)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                tools:text="98" />
+
+            <TextView
+                android:id="@+id/text_episodes"
+                style="@style/ItemSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/half_small_spacing"
+                android:text="@string/episodes"
+                app:layout_constraintStart_toEndOf="@id/tv_episodes"
+                app:layout_constraintTop_toTopOf="@id/tv_episodes" />
+
+            <TextView
+                android:id="@+id/tv_airing"
+                style="@style/ItemSubtitle.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_episodes"
+                app:releaseDate="@{item.airDate}"
+                tools:text="April 29, 2021" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

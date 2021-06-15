@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.homindolentrahar.misbar.databinding.FragmentShowsBinding
+import com.homindolentrahar.misbar.others.wrappers.Resource
 import com.homindolentrahar.misbar.ui.core.MainFragmentDirections
-import com.homindolentrahar.misbar.ui.detail.DetailItemType
-import com.homindolentrahar.misbar.ui.core.CarouselItemAdapter
-import com.homindolentrahar.misbar.ui.core.ListItemAdapter
+import com.homindolentrahar.misbar.ui.genres.GenresFragmentType
+import com.homindolentrahar.misbar.utils.EspressoIdlingResource
 import com.homindolentrahar.misbar.utils.transformers.ZoomOutPageTransformer
 
 class ShowsFragment : Fragment() {
+
     private lateinit var binding: FragmentShowsBinding
-    private lateinit var viewModel: ShowsViewModel
+    lateinit var viewModel: ShowsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,20 +30,12 @@ class ShowsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        Init viewModel
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[ShowsViewModel::class.java]
+//        Init ViewModel
+        viewModel = ViewModelProvider(requireActivity()).get(ShowsViewModel::class.java)
 //        Init carousel
-        val carouselAdapter = CarouselItemAdapter { item ->
-            val action = MainFragmentDirections.actionMainFragmentToDetailItemFragment(
-                DetailItemType.Shows.type,
-                item.id
-            )
-            findNavController().navigate(action)
+        val carouselAdapter = ShowsCarouselItemAdapter { item ->
+            viewModel.navigateToDetail(item.id)
         }
-        carouselAdapter.submitList(viewModel.getShows().take(5))
         binding.showsCarousel.apply {
             adapter = carouselAdapter
             setPageTransformer { page, position ->
@@ -51,20 +45,76 @@ class ShowsFragment : Fragment() {
                 )
             }
         }
-        binding.showsCarouselIndicator.setViewPager2(binding.showsCarousel)
 //        Init list
-        val listAdapter = ListItemAdapter { item ->
-            val action = MainFragmentDirections.actionMainFragmentToDetailItemFragment(
-                DetailItemType.Shows.type,
-                item.id
-            )
-            findNavController().navigate(action)
+        val listAdapter = ShowsListItemAdapter { item ->
+            viewModel.navigateToDetail(item.id)
         }
-        val shows = viewModel.getShows().subList(5, viewModel.getShows().size)
-        listAdapter.submitList(shows)
         binding.rvPopularShows.apply {
             adapter = listAdapter
             setHasFixedSize(true)
         }
+//        Init genres banner
+        val randomGenre = viewModel.randomGenres
+        binding.genreBanner.item = randomGenre
+        binding.genreBanner.btnCheck.setOnClickListener {
+            viewModel.navigateToGenreFragment(randomGenre)
+        }
+//        Observe ShowsFragmentData
+        EspressoIdlingResource.increment()
+        viewModel.getShowsFragmentData()
+        viewModel.showsFragmentData.observe(viewLifecycleOwner, { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    binding.loadingAnimation.loading.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    binding.loadingAnimation.loading.visibility = View.GONE
+
+                    val carouselData = resource.data?.listData
+                    val popularData = resource.data?.pagedListData
+
+                    carouselAdapter.submitList(carouselData)
+                    listAdapter.submitData(lifecycle, popularData!!)
+                    binding.showsCarouselIndicator.setViewPager2(binding.showsCarousel)
+
+                    if (!EspressoIdlingResource.idlingResource.isIdleNow) {
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+                is Resource.Error -> {
+                    binding.loadingAnimation.loading.visibility = View.GONE
+
+                    Snackbar.make(
+                        view.rootView,
+                        resource.message.toString(),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+
+                    if (!EspressoIdlingResource.idlingResource.isIdleNow) {
+                        EspressoIdlingResource.decrement()
+                    }
+                }
+            }
+        })
+//        Observe Navigation
+        viewModel.detailNavigationData.observe(viewLifecycleOwner, { id ->
+            if (id != -1) {
+                val action = MainFragmentDirections.actionMainFragmentToDetailShowsFragment(id)
+                findNavController().navigate(action)
+//                Clear Navigation
+                viewModel.clearNavigateToDetail()
+            }
+        })
+        viewModel.genreNavigationData.observe(viewLifecycleOwner, { item ->
+            item?.let {
+                val action = MainFragmentDirections.actionMainFragmentToGenresFragment(
+                    type = GenresFragmentType.Shows.name,
+                    genre = it
+                )
+                findNavController().navigate(action)
+//                Clear Navigation
+                viewModel.clearNavigateToGenreFragment()
+            }
+        })
     }
 }

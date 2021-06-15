@@ -2,13 +2,15 @@ package com.homindolentrahar.misbar.ui.core
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.homindolentrahar.misbar.ui.favorite.FavoritesFragment
 import com.homindolentrahar.misbar.ui.movies.MoviesFragment
 import com.homindolentrahar.misbar.ui.shows.ShowsFragment
 
-class MainScreenPageAdapter(fragment:Fragment) : FragmentStateAdapter(fragment) {
+class MainScreenPageAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     private val fragments = listOf(
         MoviesFragment(),
         ShowsFragment(),
+        FavoritesFragment(),
     )
 
     override fun getItemCount(): Int = fragments.size

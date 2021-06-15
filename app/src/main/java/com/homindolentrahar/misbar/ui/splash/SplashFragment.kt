@@ -2,6 +2,7 @@ package com.homindolentrahar.misbar.ui.splash
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.animation.AnimationUtils
 import androidx.navigation.fragment.findNavController
 import com.homindolentrahar.misbar.R
 import com.homindolentrahar.misbar.databinding.FragmentSplashBinding
+import com.homindolentrahar.misbar.utils.EspressoIdlingResource
 
 class SplashFragment : Fragment() {
 
@@ -35,8 +37,13 @@ class SplashFragment : Fragment() {
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                Handler().postDelayed({
+                EspressoIdlingResource.increment()
+                Handler(Looper.getMainLooper()).postDelayed({
                     findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
+
+                    if (!EspressoIdlingResource.idlingResource.isIdleNow) {
+                        EspressoIdlingResource.decrement()
+                    }
                 }, 750)
             }
 

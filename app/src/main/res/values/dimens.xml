@@ -2,12 +2,14 @@
 <resources>
     <dimen name="spacing">15dp</dimen>
     <dimen name="small_spacing">5dp</dimen>
+    <dimen name="big_radius">15dp</dimen>
+    <dimen name="double_big_radius">30dp</dimen>
     <dimen name="radius">10dp</dimen>
-    <dimen name="half_radius">5dp</dimen>
     <dimen name="medium_spacing">10dp</dimen>
     <dimen name="half_small_spacing">2.5dp</dimen>
     <dimen name="big_spacing">20dp</dimen>
     <dimen name="double_spacing">30dp</dimen>
+    <dimen name="chip_size">28dp</dimen>
     <dimen name="chip_icon_size">10dp</dimen>
     <dimen name="chip_stroke_width">1.5dp</dimen>
 </resources>

@@ -23,23 +23,98 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_detailItemFragment"
-            app:destination="@id/detailItemFragment"
-            app:enterAnim="@anim/scale_enter"
-            app:exitAnim="@anim/slide_exit"
-            app:popEnterAnim="@anim/pop_slide_enter"
-            app:popExitAnim="@anim/pop_scale_exit" />
+            android:id="@+id/action_mainFragment_to_genresFragment"
+            app:destination="@id/genresFragment"
+            app:enterAnim="@anim/scale_top_enter"
+            app:exitAnim="@anim/slide_bottom_exit"
+            app:popEnterAnim="@anim/pop_slide_top_enter"
+            app:popExitAnim="@anim/pop_scale_top_exit" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailMoviesFragment"
+            app:destination="@id/detailMoviesFragment"
+            app:enterAnim="@anim/scale_right_enter"
+            app:exitAnim="@anim/slide_left_exit"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/pop_slide_right_enter"
+            app:popExitAnim="@anim/pop_scale_right_exit" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailShowsFragment"
+            app:destination="@id/detailShowsFragment"
+            app:enterAnim="@anim/scale_right_enter"
+            app:exitAnim="@anim/slide_left_exit"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/pop_slide_right_enter"
+            app:popExitAnim="@anim/pop_scale_right_exit" />
+        <action
+            android:id="@+id/action_mainFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/scale_bottom_enter"
+            app:exitAnim="@anim/slide_top_exit"
+            app:popEnterAnim="@anim/pop_slide_bottom_enter"
+            app:popExitAnim="@anim/pop_scale_bottom_exit" />
     </fragment>
     <fragment
-        android:id="@+id/detailItemFragment"
-        android:name="com.homindolentrahar.misbar.ui.detail.DetailItemFragment"
-        android:label="fragment_detail_item"
-        tools:layout="@layout/fragment_detail_item" >
+        android:id="@+id/genresFragment"
+        android:name="com.homindolentrahar.misbar.ui.genres.GenresFragment"
+        android:label="fragment_genres"
+        tools:layout="@layout/fragment_genres" >
         <argument
             android:name="type"
             app:argType="string" />
+        <action
+            android:id="@+id/action_genresFragment_to_detailShowsFragment"
+            app:destination="@id/detailShowsFragment"
+            app:enterAnim="@anim/scale_right_enter"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/pop_slide_right_enter"
+            app:popExitAnim="@anim/pop_scale_right_exit" />
+        <action
+            android:id="@+id/action_genresFragment_to_detailMoviesFragment"
+            app:destination="@id/detailMoviesFragment"
+            app:enterAnim="@anim/scale_right_enter"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/pop_slide_right_enter"
+            app:popExitAnim="@anim/pop_scale_right_exit" />
         <argument
-            android:name="itemId"
+            android:name="genre"
+            app:argType="com.homindolentrahar.misbar.domain.models.LocalGenresModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMoviesFragment"
+        android:name="com.homindolentrahar.misbar.ui.movies.DetailMoviesFragment"
+        android:label="DetailMoviesFragment"
+        tools:layout="@layout/fragment_detail_movies">
+        <argument
+            android:name="id"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailShowsFragment"
+        android:name="com.homindolentrahar.misbar.ui.shows.DetailShowsFragment"
+        android:label="fragment_detail_shows"
+        tools:layout="@layout/fragment_detail_shows" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.homindolentrahar.misbar.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailMoviesFragment"
+            app:destination="@id/detailMoviesFragment"
+            app:enterAnim="@anim/scale_right_enter"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/pop_slide_right_enter"
+            app:popExitAnim="@anim/pop_scale_right_exit" />
+        <action
+            android:id="@+id/action_searchFragment_to_detailShowsFragment"
+            app:destination="@id/detailShowsFragment"
+            app:enterAnim="@anim/scale_right_enter"
+            app:exitAnim="@anim/slide_left_exit"
+            app:popEnterAnim="@anim/pop_slide_right_enter"
+            app:popExitAnim="@anim/pop_scale_right_exit" />
     </fragment>
 </navigation>
